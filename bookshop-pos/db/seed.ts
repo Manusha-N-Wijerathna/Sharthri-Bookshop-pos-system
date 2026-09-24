@@ -1,10 +1,12 @@
+import { hash } from "bcryptjs";
+import { eq } from "drizzle-orm";
 import { db } from "./index";
 import { products, users } from "./schema";
 
 async function seed() {
   console.log("Seeding database...");
 
-  await db.insert(products).values([
+  const sampleProducts = [
     {
       title: "The Hobbit",
       author: "J.R.R. Tolkien",
@@ -35,20 +37,74 @@ async function seed() {
       quantity: 2, // intentionally low, for testing low-stock alerts
       reorderThreshold: 3,
     },
-  ]);
+  ];
 
-  // NOTE: replace this password hash before real use — this is just a placeholder
-  // for local dev. Generate a real one with bcrypt once auth (Phase 2) is set up.
-  await db.insert(users).values([
-    {
+  for (const prod of sampleProducts) {
+    const [existing] = await db
+      .select()
+      .from(products)
+      .where(eq(products.isbn, prod.isbn))
+      .limit(1);
+
+    if (!existing) {
+      await db.insert(products).values(prod);
+      console.log(`Inserted product: ${prod.title}`);
+    }
+  }
+
+  const adminPassword = await hash("admin123", 10);
+  const cashierPassword = await hash("cashier123", 10);
+
+  // Admin user
+  const [existingAdmin] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, "owner@example.com"))
+    .limit(1);
+
+  if (existingAdmin) {
+    await db
+      .update(users)
+      .set({ passwordHash: adminPassword, name: "Shop Owner", role: "admin" })
+      .where(eq(users.email, "owner@example.com"));
+    console.log("Updated admin user password.");
+  } else {
+    await db.insert(users).values({
       name: "Shop Owner",
       email: "owner@example.com",
-      passwordHash: "REPLACE_ME_WITH_REAL_HASH",
+      passwordHash: adminPassword,
       role: "admin",
-    },
-  ]);
+    });
+    console.log("Inserted admin user.");
+  }
 
-  console.log("Seed complete.");
+  // Cashier user
+  const [existingCashier] = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, "cashier@example.com"))
+    .limit(1);
+
+  if (existingCashier) {
+    await db
+      .update(users)
+      .set({ passwordHash: cashierPassword, name: "Cashier One", role: "cashier" })
+      .where(eq(users.email, "cashier@example.com"));
+    console.log("Updated cashier user password.");
+  } else {
+    await db.insert(users).values({
+      name: "Cashier One",
+      email: "cashier@example.com",
+      passwordHash: cashierPassword,
+      role: "cashier",
+    });
+    console.log("Inserted cashier user.");
+  }
+
+  console.log("---");
+  console.log("Seed complete! Credentials:");
+  console.log("Admin:   owner@example.com / admin123");
+  console.log("Cashier: cashier@example.com / cashier123");
   process.exit(0);
 }
 
