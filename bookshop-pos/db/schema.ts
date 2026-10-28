@@ -8,6 +8,7 @@ import {
   timestamp,
   pgEnum,
   uniqueIndex,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -48,6 +49,7 @@ export const products = pgTable(
     cost: numeric("cost", { precision: 10, scale: 2 }), // purchase cost, optional, for margin reports
     quantity: integer("quantity").notNull().default(0), // current stock on hand
     reorderThreshold: integer("reorder_threshold").notNull().default(3), // "low stock" trigger point
+    isActive: boolean("is_active").notNull().default(true),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },

@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
 import { db } from "@/db";
-import { products, stockMovements } from "@/db/schema";
+import { products, saleItems, stockMovements } from "@/db/schema";
 import { updateProductSchema } from "@/lib/validations/product";
-import { and, desc, eq, ne } from "drizzle-orm";
+import { and, desc, eq, ne, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -139,6 +139,7 @@ export async function PUT(
         price: validatedData.price,
         cost: validatedData.cost || null,
         reorderThreshold: validatedData.reorderThreshold,
+        ...(validatedData.isActive !== undefined ? { isActive: validatedData.isActive } : {}),
         updatedAt: new Date(),
       })
       .where(eq(products.id, productId))
@@ -155,6 +156,87 @@ export async function PUT(
     console.error("Failed to update product:", error);
     return NextResponse.json(
       { error: error?.message || "Failed to update product" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (session.user.role !== "admin") {
+    return NextResponse.json(
+      { error: "Forbidden: Admin access required" },
+      { status: 403 }
+    );
+  }
+
+  const { id } = await params;
+  const productId = parseInt(id, 10);
+  if (isNaN(productId)) {
+    return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
+  }
+
+  try {
+    const [existing] = await db
+      .select()
+      .from(products)
+      .where(eq(products.id, productId))
+      .limit(1);
+
+    if (!existing) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    // Check if product has sales records or stock audit history
+    const [salesRecord] = await db
+      .select({ count: sql<number>`cast(count(*) as int)` })
+      .from(saleItems)
+      .where(eq(saleItems.productId, productId));
+
+    const [movementsRecord] = await db
+      .select({ count: sql<number>`cast(count(*) as int)` })
+      .from(stockMovements)
+      .where(eq(stockMovements.productId, productId));
+
+    const hasSalesHistory = (salesRecord?.count || 0) > 0;
+    const hasMovements = (movementsRecord?.count || 0) > 0;
+
+    if (hasSalesHistory || hasMovements) {
+      // Soft-delete / deactivate to preserve historical sales integrity
+      const [deactivated] = await db
+        .update(products)
+        .set({
+          isActive: false,
+          updatedAt: new Date(),
+        })
+        .where(eq(products.id, productId))
+        .returning();
+
+      return NextResponse.json({
+        message: `Product "${existing.title}" removed and archived to preserve sales history.`,
+        action: "archived",
+        product: deactivated,
+      });
+    }
+
+    // If zero sales and zero audit logs, safe to permanently delete
+    await db.delete(products).where(eq(products.id, productId));
+
+    return NextResponse.json({
+      message: `Product "${existing.title}" permanently removed.`,
+      action: "deleted",
+    });
+  } catch (error: any) {
+    console.error("Failed to delete product:", error);
+    return NextResponse.json(
+      { error: error?.message || "Failed to remove product" },
       { status: 500 }
     );
   }

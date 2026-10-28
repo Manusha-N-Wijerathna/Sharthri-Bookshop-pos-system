@@ -1,0 +1,84 @@
+/* POS Sell Screen & Printable Receipt Styles (Light & Dark Mode) */
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #printable-receipt,
+  #printable-receipt * {
+    visibility: visible;
+  }
+
+  #printable-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm;
+    margin: 0 auto;
+    padding: 10px;
+    background: white !important;
+    color: black !important;
+    font-family: monospace;
+    font-size: 12px;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Custom Cyan scrollbars for POS views (Light mode) */
+.pos-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.pos-scrollbar::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.6);
+}
+.pos-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(8, 145, 178, 0.35);
+  border-radius: 4px;
+}
+.pos-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(8, 145, 178, 0.65);
+}
+
+/* Dark mode scrollbars */
+.dark .pos-scrollbar::-webkit-scrollbar-track {
+  background: rgba(8, 14, 28, 0.4);
+}
+.dark .pos-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(30, 203, 225, 0.25);
+}
+.dark .pos-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(30, 203, 225, 0.55);
+}
+
+/* Glassmorphism item card hover effect (Light mode) */
+.pos-item-card {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pos-item-card:hover:not(:disabled) {
+  border-color: rgba(8, 145, 178, 0.5);
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08), 0 0 15px rgba(8, 145, 178, 0.15);
+  transform: translateY(-2px);
+}
+.pos-item-card:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Dark mode item card */
+.dark .pos-item-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.dark .pos-item-card:hover:not(:disabled) {
+  border-color: rgba(30, 203, 225, 0.5);
+  background: rgba(15, 23, 42, 0.85);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(30, 203, 225, 0.15);
+  transform: translateY(-2px);
+}

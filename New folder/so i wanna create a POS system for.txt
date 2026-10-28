@@ -1,0 +1,16 @@
+so i wanna create a POS system for my book shop and ,
+the main funtions are the system 
+1) stock management 
+2)and day , weekly , monthly stock analyze (most sold products(list in order) , which product will got out of stock nearly , ) 
+
+Manu#2002606Nuwan
+Project pw
+
+
+anon public key = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwdWh2bmRkdnZpa2xhZmlyYW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyMzU4ODQsImV4cCI6MjEwNTgxMTg4NH0.9N0qr_LLDpQsPLD5Z-tXcI1OrtjW9MXDUOdQrZY-0FQ
+
+service_role=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwdWh2bmRkdnZpa2xhZmlyYW5vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDIzNTg4NCwiZXhwIjoyMTA1ODExODg0fQ.L4bjOQ4rCaGEoA4rx-kcG1HTc6WQUrwZqE1Lv2f6VHs
+
+
+Admin: owner@example.com / admin123
+Cashier: cashier@example.com / cashier123

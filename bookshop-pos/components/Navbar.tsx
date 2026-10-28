@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import ThemeToggle from "./ThemeToggle";
 
 interface NavbarProps {
   user: {
@@ -28,18 +29,18 @@ export default function Navbar({ user }: NavbarProps) {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#0d1322]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-white/10 bg-white/80 dark:bg-[#060a12]/80 backdrop-blur-2xl shadow-sm dark:shadow-lg dark:shadow-black/20 transition-colors">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
-        <div className="flex items-center gap-8">
-          <Link href={isAdmin ? "/admin/products" : "/sell"} className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 shadow-md shadow-amber-500/20">
+        <div className="flex items-center gap-6 sm:gap-8">
+          <Link href={isAdmin ? "/admin/products" : "/sell"} className="flex items-center gap-3 group">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#1ecbe1] to-[#0891b2] text-slate-950 shadow-md shadow-[#1ecbe1]/25 group-hover:shadow-[#1ecbe1]/40 group-hover:scale-105 transition-all">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="h-5 w-5"
@@ -50,25 +51,27 @@ export default function Navbar({ user }: NavbarProps) {
               </svg>
             </div>
             <div>
-              <span className="text-base font-bold tracking-tight text-white">Sharthri Bookshop</span>
-              <span className="block text-[10px] uppercase font-semibold tracking-wider text-amber-400/90">
+              <span className="text-base font-extrabold tracking-tight text-slate-900 dark:text-white group-hover:text-[#0891b2] dark:group-hover:text-[#1ecbe1] transition-colors">
+                Sharthri Bookshop
+              </span>
+              <span className="block text-[10px] uppercase font-extrabold tracking-wider text-[#0891b2] dark:text-[#1ecbe1]">
                 POS System
               </span>
             </div>
           </Link>
 
           {/* Nav Items */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1.5">
             {navLinks.map((link) => {
               const isActive = pathname.startsWith(link.href);
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+                  className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
                     isActive
-                      ? "bg-amber-500/15 text-amber-300 font-semibold border border-amber-500/30"
-                      : "text-slate-300 hover:bg-white/5 hover:text-white"
+                      ? "bg-[#1ecbe1]/15 text-[#0891b2] dark:text-[#1ecbe1] border border-[#1ecbe1]/40 shadow-sm shadow-[#1ecbe1]/20"
+                      : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white border border-transparent"
                   }`}
                 >
                   {link.label}
@@ -79,36 +82,43 @@ export default function Navbar({ user }: NavbarProps) {
         </div>
 
         {/* User profile & actions */}
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold text-amber-300">
+        <div className="flex items-center gap-2.5 sm:gap-4">
+          {/* Theme Toggle Button */}
+          <ThemeToggle />
+
+          {/* Profile Badge */}
+          <div className="flex items-center gap-2 sm:gap-3 pl-1 sm:pl-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-bold text-[#0891b2] dark:text-[#1ecbe1] shadow-inner">
               {user.name ? user.name[0].toUpperCase() : "U"}
             </div>
             <div className="hidden sm:flex flex-col text-left">
-              <span className="text-xs font-semibold text-slate-200">{user.name || "User"}</span>
+              <span className="text-xs font-bold text-slate-900 dark:text-white">{user.name || "User"}</span>
               <div className="flex items-center gap-1.5">
                 <span
                   className={`inline-block h-1.5 w-1.5 rounded-full ${
-                    isAdmin ? "bg-amber-400" : "bg-emerald-400"
+                    isAdmin
+                      ? "bg-[#0891b2] dark:bg-[#1ecbe1] shadow-[0_0_8px_#1ecbe1]"
+                      : "bg-emerald-500 shadow-[0_0_8px_#10b981]"
                   }`}
                 />
-                <span className="text-[10px] uppercase tracking-wider text-slate-400 font-medium">
+                <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">
                   {user.role}
                 </span>
               </div>
             </div>
           </div>
 
+          {/* Sign Out Button */}
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="flex items-center gap-1.5 rounded-md border border-slate-700/80 bg-slate-900/80 px-2.5 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-300"
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-100/80 dark:bg-white/5 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 transition-all hover:border-rose-500/40 hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-300 active:scale-95 cursor-pointer"
             title="Sign out"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth="1.75"
+              strokeWidth="2"
               stroke="currentColor"
               className="h-3.5 w-3.5"
             >
