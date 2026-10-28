@@ -18,7 +18,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col">
+    <div className="min-h-screen text-slate-100 flex flex-col selection:bg-[#1ecbe1]/30 selection:text-white">
       <Navbar user={session.user} />
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
         {children}

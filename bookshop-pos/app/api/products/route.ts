@@ -15,8 +15,15 @@ export async function GET(req: Request) {
   const search = searchParams.get("search")?.trim();
   const category = searchParams.get("category")?.trim();
   const lowStock = searchParams.get("lowStock") === "true";
+  const status = searchParams.get("status") || "active"; // "active" | "archived" | "all"
 
   const conditions = [];
+
+  if (status === "active") {
+    conditions.push(eq(products.isActive, true));
+  } else if (status === "archived") {
+    conditions.push(eq(products.isActive, false));
+  }
 
   if (search) {
     const searchPattern = `%${search}%`;
@@ -48,15 +55,23 @@ export async function GET(req: Request) {
       .orderBy(desc(products.updatedAt), desc(products.id));
 
     // Also get distinct categories for filter dropdown
-    const categoriesResult = await db
-      .selectDistinct({ category: products.category })
-      .from(products)
-      .where(sql`${products.category} IS NOT NULL AND ${products.category} != ''`);
+    let categories: string[] = [];
+    try {
+      const categoriesResult = await db
+        .selectDistinct({ category: products.category })
+        .from(products)
+        .where(sql`${products.category} IS NOT NULL AND ${products.category} != ''`);
 
-    const categories = categoriesResult
-      .map((c) => c.category)
-      .filter((c): c is string => Boolean(c))
-      .sort();
+      categories = categoriesResult
+        .map((c) => c.category)
+        .filter((c): c is string => Boolean(c))
+        .sort();
+    } catch {
+      // Graceful fallback: extract distinct categories directly from items
+      categories = Array.from(
+        new Set(items.map((i) => i.category).filter((c): c is string => Boolean(c)))
+      ).sort();
+    }
 
     return NextResponse.json({ products: items, categories });
   } catch (error) {
@@ -87,17 +102,19 @@ export async function POST(req: Request) {
 
     const initialQuantity = validatedData.quantity;
 
-    // Check unique ISBN if provided
+    // Check unique Barcode / ISBN if provided
     if (validatedData.isbn) {
       const [existingIsbn] = await db
-        .select({ id: products.id })
+        .select({ id: products.id, title: products.title })
         .from(products)
         .where(eq(products.isbn, validatedData.isbn))
         .limit(1);
 
       if (existingIsbn) {
         return NextResponse.json(
-          { error: "A product with this ISBN already exists" },
+          {
+            error: `An item with Barcode "${validatedData.isbn}" already exists ("${existingIsbn.title}"). Barcodes must be unique or left blank.`,
+          },
           { status: 400 }
         );
       }
@@ -106,14 +123,16 @@ export async function POST(req: Request) {
     // Check unique SKU if provided
     if (validatedData.sku) {
       const [existingSku] = await db
-        .select({ id: products.id })
+        .select({ id: products.id, title: products.title })
         .from(products)
         .where(eq(products.sku, validatedData.sku))
         .limit(1);
 
       if (existingSku) {
         return NextResponse.json(
-          { error: "A product with this SKU already exists" },
+          {
+            error: `An item with SKU/Code "${validatedData.sku}" already exists ("${existingSku.title}"). Please choose another code or leave it blank.`,
+          },
           { status: 400 }
         );
       }
@@ -133,6 +152,7 @@ export async function POST(req: Request) {
           cost: validatedData.cost || null,
           quantity: initialQuantity,
           reorderThreshold: validatedData.reorderThreshold,
+          isActive: true,
         })
         .returning();
 
@@ -151,8 +171,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ product: result }, { status: 201 });
   } catch (error: any) {
     if (error?.name === "ZodError") {
+      const firstIssue = error.issues?.[0] || error.errors?.[0];
+      const field = firstIssue?.path?.join(".") || "field";
+      const msg = firstIssue?.message || "Validation error";
       return NextResponse.json(
-        { error: error.errors?.[0]?.message || "Validation error", details: error.errors },
+        {
+          error: `${msg} (${field})`,
+          details: error.issues || error.errors,
+        },
         { status: 400 }
       );
     }

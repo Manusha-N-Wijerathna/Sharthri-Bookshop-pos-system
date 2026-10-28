@@ -4,38 +4,74 @@ import { db } from "./index";
 import { products, users } from "./schema";
 
 async function seed() {
-  console.log("Seeding database...");
+  console.log("Seeding database with stationery and food items...");
 
   const sampleProducts = [
     {
-      title: "The Hobbit",
-      author: "J.R.R. Tolkien",
-      isbn: "9780547928227",
-      category: "Fiction",
-      price: "1500.00",
-      cost: "900.00",
+      title: "Atlas CR Book 120 Pages Single Rule",
+      author: "Atlas",
+      isbn: "4792024001011",
+      sku: "CR-120-SR",
+      category: "Writing Books (CR, B5, XE)",
+      price: "280.00",
+      cost: "220.00",
+      quantity: 25,
+      reorderThreshold: 5,
+    },
+    {
+      title: "Atlas B5 Book 120 Pages Single Rule",
+      author: "Atlas",
+      isbn: "4792024001028",
+      sku: "B5-120-SR",
+      category: "Writing Books (CR, B5, XE)",
+      price: "220.00",
+      cost: "170.00",
+      quantity: 18,
+      reorderThreshold: 5,
+    },
+    {
+      title: "Atlas Exercise (XE) Book 80 Pages Single Rule",
+      author: "Atlas",
+      isbn: "4792024001035",
+      sku: "XE-80-SR",
+      category: "Writing Books (CR, B5, XE)",
+      price: "140.00",
+      cost: "105.00",
+      quantity: 30,
+      reorderThreshold: 8,
+    },
+    {
+      title: "Atlas Chooty Ballpoint Pen (Blue 0.7mm)",
+      author: "Atlas",
+      isbn: "4792024002018",
+      sku: "PEN-BLUE-01",
+      category: "Pens & Writing",
+      price: "30.00",
+      cost: "22.00",
+      quantity: 50,
+      reorderThreshold: 15,
+    },
+    {
+      title: "Munchee Chocolate Puff 100g",
+      author: "Munchee",
+      isbn: "4792024003015",
+      sku: "SNK-CHOC-100",
+      category: "Food & Snacks",
+      price: "180.00",
+      cost: "150.00",
+      quantity: 4, // low stock for testing alert
+      reorderThreshold: 6,
+    },
+    {
+      title: "Elephant House Ginger Beer (EGB) 300ml",
+      author: "Elephant House",
+      isbn: "4792024004012",
+      sku: "BEV-EGB-300",
+      category: "Beverages",
+      price: "150.00",
+      cost: "120.00",
       quantity: 12,
-      reorderThreshold: 3,
-    },
-    {
-      title: "Sapiens",
-      author: "Yuval Noah Harari",
-      isbn: "9780062316097",
-      category: "Non-fiction",
-      price: "2200.00",
-      cost: "1400.00",
-      quantity: 5,
-      reorderThreshold: 3,
-    },
-    {
-      title: "Clean Code",
-      author: "Robert C. Martin",
-      isbn: "9780132350884",
-      category: "Technology",
-      price: "3200.00",
-      cost: "2000.00",
-      quantity: 2, // intentionally low, for testing low-stock alerts
-      reorderThreshold: 3,
+      reorderThreshold: 5,
     },
   ];
 
