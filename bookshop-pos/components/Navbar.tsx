@@ -64,21 +64,12 @@ export default function Navbar({ user }: NavbarProps) {
             className="flex items-center gap-2.5 sm:gap-3 group"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#1ecbe1] to-[#0891b2] text-slate-950 shadow-md shadow-[#1ecbe1]/25 group-hover:shadow-[#1ecbe1]/40 group-hover:scale-105 transition-all">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-5 w-5"
-              >
-                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-                <path d="M8 7h6" />
-                <path d="M8 11h4" />
-              </svg>
+            <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-white p-0.5 border border-slate-200 dark:border-white/10 shadow-md shadow-[#1ecbe1]/25 group-hover:shadow-[#1ecbe1]/40 group-hover:scale-105 transition-all overflow-hidden">
+              <img
+                src="/brand-logo.png"
+                alt="Sharthri Bookshop"
+                className="h-full w-full object-contain"
+              />
             </div>
             <div>
               <span className="text-sm sm:text-base font-extrabold tracking-tight text-slate-900 dark:text-white group-hover:text-[#0891b2] dark:group-hover:text-[#1ecbe1] transition-colors leading-none block">
@@ -114,6 +105,19 @@ export default function Navbar({ user }: NavbarProps) {
 
         {/* Right Section: Theme Toggle, Profile & Mobile Hamburger */}
         <div className="flex items-center gap-1.5 sm:gap-3">
+          {/* PWA Install Button (Desktop) */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent("pwa-trigger-install"))}
+            className="hidden lg:flex items-center gap-1.5 rounded-xl border border-[#1ecbe1]/30 bg-[#1ecbe1]/10 px-2.5 py-1.5 text-xs font-bold text-[#0891b2] dark:text-[#1ecbe1] hover:bg-[#1ecbe1]/20 active:scale-95 transition-all cursor-pointer shadow-sm"
+            title="Install POS App on Desktop"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-3.5 h-3.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            <span>Install App</span>
+          </button>
+
           {/* Theme Toggle Button */}
           <ThemeToggle />
 
@@ -233,6 +237,20 @@ export default function Navbar({ user }: NavbarProps) {
                 </Link>
               );
             })}
+            {/* Mobile PWA Install Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.dispatchEvent(new CustomEvent("pwa-trigger-install"));
+              }}
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#0891b2] dark:text-[#1ecbe1] bg-[#1ecbe1]/10 hover:bg-[#1ecbe1]/20 border border-[#1ecbe1]/25 transition-all cursor-pointer text-left mt-1"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              <span>Install POS App (PWA)</span>
+            </button>
           </nav>
         </div>
       )}
