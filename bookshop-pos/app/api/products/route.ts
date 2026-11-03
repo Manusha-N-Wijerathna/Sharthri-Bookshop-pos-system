@@ -5,6 +5,8 @@ import { createProductSchema } from "@/lib/validations/product";
 import { and, desc, eq, ilike, lte, or, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   const session = await auth();
   if (!session?.user) {
