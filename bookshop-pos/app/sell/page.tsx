@@ -47,6 +47,7 @@ interface SaleReceipt {
 export default function SellPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartHistory, setCartHistory] = useState<CartItem[][]>([]);
+  const [mobileTab, setMobileTab] = useState<"catalog" | "cart">("catalog");
 
   // Catalog & Products state (shown under search bar)
   const [catalogProducts, setCatalogProducts] = useState<Product[]>([]);
@@ -538,20 +539,63 @@ export default function SellPage() {
         </div>
       )}
 
+      {/* Mobile Tab Switcher (Visible only on < lg) */}
+      <div className="lg:hidden flex items-center p-1 rounded-2xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200/90 dark:border-white/10 backdrop-blur-xl shadow-sm">
+        <button
+          type="button"
+          onClick={() => setMobileTab("catalog")}
+          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            mobileTab === "catalog"
+              ? "bg-gradient-to-r from-[#1ecbe1] to-[#06b6d4] text-slate-950 shadow-md shadow-[#1ecbe1]/20 font-extrabold"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+          }`}
+        >
+          <span>📦 Items Catalog</span>
+          <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+            mobileTab === "catalog" ? "bg-slate-950/20 text-slate-950" : "bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300"
+          }`}>
+            {displayedProducts.length}
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileTab("cart")}
+          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            mobileTab === "cart"
+              ? "bg-gradient-to-r from-[#1ecbe1] to-[#06b6d4] text-slate-950 shadow-md shadow-[#1ecbe1]/20 font-extrabold"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+          }`}
+        >
+          <span>🛒 Cart</span>
+          <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+            totalItemsCount > 0 ? "bg-[#1ecbe1] text-slate-950" : "bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300"
+          }`}>
+            {totalItemsCount}
+          </span>
+          {totalAmount > 0 && (
+            <span className="text-[11px] font-black text-cyan-800 dark:text-[#1ecbe1]">
+              Rs. {totalAmount.toFixed(0)}
+            </span>
+          )}
+        </button>
+      </div>
+
       {/* Main Grid: Left Catalog / Search & Right Cart */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
         {/* Left Column: Product Catalog & Quick Add (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col gap-4">
+        <div className={`lg:col-span-7 flex flex-col gap-4 ${mobileTab === "catalog" ? "flex" : "hidden lg:flex"}`}>
           <div className="rounded-2xl border border-slate-200/90 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-4 sm:p-5 shadow-xl dark:shadow-2xl backdrop-blur-2xl space-y-4">
             {/* Header with Title and Keyboard Shortcut Tip */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                  <span>Product Catalog</span>
-                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-[#0891b2] dark:text-[#1ecbe1] border border-[#1ecbe1]/30">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">
+                    Product Catalog
+                  </h2>
+                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-[#0891b2] dark:text-[#1ecbe1] border border-[#1ecbe1]/30 shrink-0">
                     {displayedProducts.length} {displayedProducts.length === 1 ? "item" : "items"}
                   </span>
-                </h2>
+                </div>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                   Click any item card to add to cart, or filter by category.
                 </p>
@@ -804,17 +848,31 @@ export default function SellPage() {
         </div>
 
         {/* Right Column: Active Cart & Checkout (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col gap-4">
+        <div className={`lg:col-span-5 flex flex-col gap-4 ${mobileTab === "cart" ? "flex" : "hidden lg:flex"}`}>
           <div className="rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-4 sm:p-6 shadow-xl dark:shadow-2xl backdrop-blur-2xl flex flex-col min-h-[580px]">
+            {/* Mobile Back to Items button */}
+            <div className="lg:hidden pb-3 border-b border-slate-200/80 dark:border-white/10 mb-3">
+              <button
+                type="button"
+                onClick={() => setMobileTab("catalog")}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0891b2] dark:text-[#1ecbe1] hover:underline cursor-pointer"
+              >
+                <span>&larr;</span>
+                <span>Back to Items Catalog</span>
+              </button>
+            </div>
+
             {/* Cart Header */}
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-3 mb-4">
               <div>
-                <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                  <span>Current Cart</span>
-                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-50 dark:bg-white/5 text-cyan-700 dark:text-[#1ecbe1] border border-cyan-300 dark:border-[#1ecbe1]/30 font-bold">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
+                    Current Cart
+                  </h2>
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-50 dark:bg-white/5 text-cyan-700 dark:text-[#1ecbe1] border border-cyan-300 dark:border-[#1ecbe1]/30 font-bold shrink-0">
                     {totalItemsCount} {totalItemsCount === 1 ? "item" : "items"}
                   </span>
-                </h2>
+                </div>
               </div>
 
               {/* Cart Action Buttons */}
@@ -910,7 +968,7 @@ export default function SellPage() {
                             <div className="flex items-center justify-center gap-1.5">
                               <button
                                 onClick={() => updateItemQuantity(item.product.id, item.quantity - 1)}
-                                className="h-6 w-6 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white hover:bg-slate-200 dark:hover:bg-white/15 active:scale-95 flex items-center justify-center text-sm font-bold transition-all"
+                                className="h-8 w-8 sm:h-7 sm:w-7 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white hover:bg-slate-200 dark:hover:bg-white/15 active:scale-95 flex items-center justify-center text-sm font-bold transition-all cursor-pointer"
                               >
                                 &minus;
                               </button>
@@ -920,7 +978,7 @@ export default function SellPage() {
                               <button
                                 onClick={() => updateItemQuantity(item.product.id, item.quantity + 1)}
                                 disabled={item.quantity >= item.product.quantity}
-                                className="h-6 w-6 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white hover:bg-slate-200 dark:hover:bg-white/15 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-sm font-bold transition-all"
+                                className="h-8 w-8 sm:h-7 sm:w-7 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white hover:bg-slate-200 dark:hover:bg-white/15 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-sm font-bold transition-all cursor-pointer"
                               >
                                 +
                               </button>
@@ -1054,10 +1112,39 @@ export default function SellPage() {
         </div>
       </div>
 
+      {/* Mobile Floating Sticky Cart Summary Pill */}
+      {mobileTab === "catalog" && cart.length > 0 && (
+        <div className="fixed bottom-4 left-3 right-3 z-40 lg:hidden animate-fade-in">
+          <button
+            type="button"
+            onClick={() => setMobileTab("cart")}
+            className="w-full p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-[#1ecbe1] via-[#22d3ee] to-[#0891b2] text-slate-950 font-extrabold shadow-2xl shadow-[#1ecbe1]/40 flex items-center justify-between active:scale-[0.98] transition-all border border-white/40 cursor-pointer"
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-950/15 text-slate-950 font-bold text-base">
+                🛒
+              </span>
+              <div className="text-left">
+                <div className="text-[10px] sm:text-[11px] uppercase tracking-wider text-slate-950/80 font-bold leading-none">
+                  {totalItemsCount} {totalItemsCount === 1 ? "item" : "items"} in cart
+                </div>
+                <div className="text-sm sm:text-base font-black text-slate-950 leading-tight">
+                  Rs. {totalAmount.toFixed(2)}
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-950 text-white text-xs font-bold shadow-md">
+              <span>View Cart & Pay</span>
+              <span>&rarr;</span>
+            </div>
+          </button>
+        </div>
+      )}
+
       {/* Confirmation & Printable Receipt Modal */}
       {completedSale && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 dark:bg-black/80 backdrop-blur-md p-4 overflow-y-auto">
-          <div className="relative w-full max-w-md rounded-3xl border border-slate-200 dark:border-white/15 bg-white/95 dark:bg-slate-950/85 backdrop-blur-2xl p-6 shadow-2xl dark:shadow-cyan-950/40 animate-fade-in text-slate-900 dark:text-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 dark:bg-black/80 backdrop-blur-md p-3 sm:p-4 overflow-y-auto">
+          <div className="relative w-full max-w-md max-h-[92vh] overflow-y-auto rounded-3xl border border-slate-200 dark:border-white/15 bg-white/95 dark:bg-slate-950/85 backdrop-blur-2xl p-4 sm:p-6 shadow-2xl dark:shadow-cyan-950/40 animate-fade-in text-slate-900 dark:text-slate-100">
             {/* Header / Success Icon */}
             <div className="text-center pb-4 border-b border-slate-200 dark:border-white/10 no-print">
               <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1ecbe1]/15 text-[#1ecbe1] border border-[#1ecbe1]/30 shadow-lg shadow-[#1ecbe1]/20">
@@ -1178,8 +1265,8 @@ export default function SellPage() {
 
       {/* Checkout History Modal */}
       {historyOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 dark:bg-black/80 backdrop-blur-md p-4 overflow-y-auto">
-          <div className="relative w-full max-w-3xl rounded-3xl border border-slate-200 dark:border-white/15 bg-white/95 dark:bg-slate-950/85 backdrop-blur-2xl p-6 shadow-2xl dark:shadow-cyan-950/40 animate-fade-in text-slate-900 dark:text-slate-100 max-h-[90vh] flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 dark:bg-black/80 backdrop-blur-md p-3 sm:p-4 overflow-y-auto">
+          <div className="relative w-full max-w-3xl rounded-3xl border border-slate-200 dark:border-white/15 bg-white/95 dark:bg-slate-950/85 backdrop-blur-2xl p-4 sm:p-6 shadow-2xl dark:shadow-cyan-950/40 animate-fade-in text-slate-900 dark:text-slate-100 max-h-[90vh] flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-4">
               <div>
