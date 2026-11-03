@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 import "./login.css";
 
 function LoginForm() {
@@ -53,21 +54,15 @@ function LoginForm() {
       <div className="login-card">
         {/* Logo / Branding */}
         <div className="login-header">
-          <div className="login-logo">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="login-logo-icon"
-            >
-              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-              <path d="M8 7h6" />
-              <path d="M8 11h4" />
-            </svg>
+          <div className="login-logo overflow-hidden bg-white p-1 border border-slate-200 dark:border-white/20 shadow-lg shadow-[#1ecbe1]/30">
+            <Image
+              src="/brand-logo.png"
+              alt="Sharthri Bookshop"
+              width={60}
+              height={60}
+              className="w-full h-full object-contain"
+              priority
+            />
           </div>
           <h1 className="login-title">Sharthri Bookshop</h1>
           <p className="login-subtitle">Point of Sale System</p>
