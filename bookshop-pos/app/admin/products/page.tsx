@@ -30,7 +30,7 @@ interface StockMovement {
 }
 
 const COMMON_CATEGORIES = [
-  "Writing Books",
+  "Writing books",
   "Pens & Writing",
   "Stationery Supplies",
   "Food & Snacks",
@@ -78,7 +78,7 @@ export default function ProductsPage() {
     author: "", // Brand / Manufacturer
     isbn: "", // Barcode
     sku: "",
-    category: "Writing Books",
+    category: "Writing books",
     price: "",
     cost: "",
     quantity: 0,
@@ -143,7 +143,7 @@ export default function ProductsPage() {
       author: "",
       isbn: "",
       sku: "",
-      category: "Writing Books",
+      category: "Writing books",
       price: "",
       cost: "",
       quantity: 0,
@@ -160,7 +160,7 @@ export default function ProductsPage() {
     if (type === "CR") {
       setFormData((prev) => ({
         ...prev,
-        category: "Writing Books",
+        category: "Writing books",
         author: prev.author || "Atlas",
         title: prev.title ? prev.title : "CR Book 120 Pages Single Rule",
         sku: prev.sku || "CR-120-SR",
@@ -170,7 +170,7 @@ export default function ProductsPage() {
     } else if (type === "B5") {
       setFormData((prev) => ({
         ...prev,
-        category: "Writing Books",
+        category: "Writing books",
         author: prev.author || "Atlas",
         title: prev.title ? prev.title : "B5 Book 120 Pages Single Rule",
         sku: prev.sku || "B5-120-SR",
@@ -180,7 +180,7 @@ export default function ProductsPage() {
     } else if (type === "XE") {
       setFormData((prev) => ({
         ...prev,
-        category: "Writing Books",
+        category: "Writing books",
         author: prev.author || "Atlas",
         title: prev.title ? prev.title : "Exercise Book (XE) 80 Pages Single Rule",
         sku: prev.sku || "XE-80-SR",
@@ -238,7 +238,7 @@ export default function ProductsPage() {
       author: product.author || "",
       isbn: product.isbn || "",
       sku: product.sku || "",
-      category: product.category || "Writing Books",
+      category: product.category || "Writing books",
       price: product.price,
       cost: product.cost || "",
       quantity: product.quantity,
@@ -447,20 +447,22 @@ export default function ProductsPage() {
       {/* Header & Stats */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-3">
-            Stationery & Inventory Items
-            <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-              {totalProducts} items
+          <div className="flex flex-wrap items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              Stationery & Inventory Items
+            </h1>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#1ecbe1]/15 text-[#0891b2] dark:text-[#1ecbe1] border border-[#1ecbe1]/30 shadow-sm shrink-0">
+              {totalProducts} {totalProducts === 1 ? "item" : "items"}
             </span>
-          </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Writing books (CR, B5, XE), pens, office supplies, food & beverages.
+          </div>
+          <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Writing books, pens, office supplies, food & beverages.
           </p>
         </div>
 
         <button
           onClick={handleOpenAdd}
-          className="btn-primary self-start sm:self-auto cursor-pointer"
+          className="btn-primary w-full sm:w-auto justify-center cursor-pointer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -476,9 +478,9 @@ export default function ProductsPage() {
 
       {/* Low Stock Warning Banner if any */}
       {lowStockCount > 0 && (
-        <div className="flex items-center justify-between rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-red-800 dark:text-red-200">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-red-500/30 bg-red-500/10 p-3.5 sm:p-4 text-red-800 dark:text-red-200">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-500/20 text-red-500 dark:text-red-400">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-500/20 text-red-500 dark:text-red-400">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
@@ -493,7 +495,7 @@ export default function ProductsPage() {
               </svg>
             </div>
             <div>
-              <p className="font-semibold text-slate-900 dark:text-white">
+              <p className="font-semibold text-sm text-slate-900 dark:text-white">
                 {lowStockCount} {lowStockCount === 1 ? "item requires" : "items require"} reordering
               </p>
               <p className="text-xs text-red-600 dark:text-red-300">
@@ -503,7 +505,7 @@ export default function ProductsPage() {
           </div>
           <button
             onClick={() => setLowStockOnly(!lowStockOnly)}
-            className="rounded-lg border border-red-500/40 bg-red-500/20 px-3 py-1.5 text-xs font-semibold text-red-900 dark:text-white hover:bg-red-500/30 transition-colors cursor-pointer"
+            className="w-full sm:w-auto text-center rounded-xl border border-red-500/40 bg-red-500/20 px-3 py-1.5 text-xs font-semibold text-red-900 dark:text-white hover:bg-red-500/30 transition-colors cursor-pointer shrink-0"
           >
             {lowStockOnly ? "Show All Items" : "Filter Low Stock"}
           </button>
@@ -547,12 +549,12 @@ export default function ProductsPage() {
           </div>
 
           {/* Filters */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full md:w-auto">
             {/* Status Dropdown */}
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="input-dark w-auto min-w-[130px] cursor-pointer"
+              className="input-dark w-full sm:w-auto sm:min-w-[130px] cursor-pointer"
             >
               <option value="active">Active Items</option>
               <option value="archived">Archived / Removed</option>
@@ -563,7 +565,7 @@ export default function ProductsPage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="input-dark w-auto min-w-[170px] cursor-pointer"
+              className="input-dark w-full sm:w-auto sm:min-w-[170px] cursor-pointer"
             >
               <option value="all">All Categories</option>
               {Array.from(new Set([...COMMON_CATEGORIES, ...categories])).map((cat) => (
@@ -576,7 +578,7 @@ export default function ProductsPage() {
             {/* Low stock toggle */}
             <button
               onClick={() => setLowStockOnly(!lowStockOnly)}
-              className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition-colors cursor-pointer ${lowStockOnly
+              className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold transition-all cursor-pointer w-full sm:w-auto ${lowStockOnly
                   ? "border-red-500/50 bg-red-500/20 text-red-700 dark:text-red-200 font-bold"
                   : "border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800"
                 }`}
@@ -591,18 +593,285 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* Products Table */}
+      {/* Products Display Container */}
       <div className="card-glass overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* ========================================================= */}
+        {/* 1. MOBILE RESPONSIVE CARD VIEW (Visible on mobile: < md) */}
+        {/* ========================================================= */}
+        <div className="block md:hidden">
+          {loading ? (
+            <div className="py-12 text-center text-slate-400 flex flex-col items-center justify-center gap-3">
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#1ecbe1] border-t-transparent" />
+              <span className="text-xs">Loading inventory...</span>
+            </div>
+          ) : products.length === 0 ? (
+            <div className="p-8 text-center text-slate-400 flex flex-col items-center justify-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="h-8 w-8 text-slate-400 dark:text-slate-500"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                />
+              </svg>
+              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">No items found</span>
+              <span className="text-xs text-slate-500">
+                {searchQuery || selectedCategory !== "all" || lowStockOnly
+                  ? "Try adjusting your search or filters."
+                  : "Start by adding your first stationery or food item."}
+              </span>
+            </div>
+          ) : (
+            <div className="p-3 space-y-3">
+              {products.map((product) => {
+                const isLowStock = product.quantity <= product.reorderThreshold;
+                const isArchived = product.isActive === false;
+
+                return (
+                  <div
+                    key={product.id}
+                    className={`p-3.5 rounded-2xl border transition-all ${
+                      isArchived
+                        ? "bg-slate-100/50 dark:bg-slate-950/40 border-slate-200 dark:border-white/5 opacity-70"
+                        : isLowStock
+                        ? "bg-rose-500/[0.04] dark:bg-rose-500/[0.08] border-rose-300/60 dark:border-rose-500/30 shadow-sm"
+                        : "bg-white/90 dark:bg-white/[0.03] border-slate-200/90 dark:border-white/10 shadow-sm"
+                    }`}
+                  >
+                    {/* Top Row: Category tag + Stock Status */}
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        {product.category ? (
+                          <span className="badge-category rounded-lg px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide">
+                            {product.category}
+                          </span>
+                        ) : (
+                          <span className="rounded-lg bg-slate-100 dark:bg-white/5 px-2 py-0.5 text-[10px] font-medium text-slate-400">
+                            General
+                          </span>
+                        )}
+                        {product.author && (
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold truncate max-w-[130px]">
+                            {product.author}
+                          </span>
+                        )}
+                      </div>
+
+                      <div>
+                        {isArchived ? (
+                          <span className="rounded-full bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-300 border border-red-300 dark:border-red-500/30 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider">
+                            Archived
+                          </span>
+                        ) : (
+                          <span
+                            className={`rounded-full px-2.5 py-0.5 text-[11px] font-extrabold ${
+                              isLowStock ? "badge-lowstock" : "badge-instock"
+                            }`}
+                          >
+                            {product.quantity} in stock
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Middle: Item Title & Barcode / SKU Code */}
+                    <div className="mb-2.5">
+                      <h3 className="font-extrabold text-sm text-slate-900 dark:text-white leading-snug">
+                        {product.title}
+                      </h3>
+                      <div className="flex items-center gap-2 mt-1.5 flex-wrap text-[11px]">
+                        {product.isbn && (
+                          <span className="font-mono bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 flex items-center gap-1">
+                            <span className="text-slate-400 font-normal">Barcode:</span>
+                            <span className="font-bold">{product.isbn}</span>
+                          </span>
+                        )}
+                        {product.sku && (
+                          <span className="font-mono bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                            <span className="text-slate-400 font-normal">Code:</span>
+                            <span>{product.sku}</span>
+                          </span>
+                        )}
+                        {!product.isbn && !product.sku && (
+                          <span className="text-slate-400 text-[10px] italic">No barcode or code</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Price & Reorder Info Strip */}
+                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-100/70 dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/10 mb-3 text-xs">
+                      <div>
+                        <div className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">
+                          Selling Price
+                        </div>
+                        <div className="text-sm font-black text-cyan-700 dark:text-[#1ecbe1]">
+                          Rs. {parseFloat(product.price).toFixed(2)}
+                        </div>
+                      </div>
+
+                      {product.cost && (
+                        <div className="text-center">
+                          <div className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">
+                            Wholesale Cost
+                          </div>
+                          <div className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                            Rs. {parseFloat(product.cost).toFixed(2)}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="text-right">
+                        <div className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">
+                          Low Stock Alert
+                        </div>
+                        <div className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                          ≤ {product.reorderThreshold} units
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom Actions Row */}
+                    <div className={`grid ${!isArchived ? "grid-cols-4" : "grid-cols-3"} gap-1.5 pt-1 border-t border-slate-200/60 dark:border-white/5`}>
+                      {/* Adjust Stock */}
+                      {!isArchived && (
+                        <button
+                          type="button"
+                          onClick={() => handleOpenAdjust(product)}
+                          className="flex items-center justify-center gap-1 py-2 px-1 rounded-xl bg-cyan-100 dark:bg-[#1ecbe1]/15 text-cyan-800 dark:text-[#1ecbe1] border border-cyan-300 dark:border-[#1ecbe1]/30 hover:bg-cyan-200 dark:hover:bg-[#1ecbe1]/25 active:scale-95 transition-all text-xs font-bold cursor-pointer"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2.2"
+                            stroke="currentColor"
+                            className="h-3.5 w-3.5"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+                          </svg>
+                          <span>Adjust</span>
+                        </button>
+                      )}
+
+                      {/* Edit Details */}
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEdit(product)}
+                        className="flex items-center justify-center gap-1 py-2 px-1 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 active:scale-95 transition-all text-xs font-bold cursor-pointer"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="2"
+                          stroke="currentColor"
+                          className="h-3.5 w-3.5"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                          />
+                        </svg>
+                        <span>Edit</span>
+                      </button>
+
+                      {/* History */}
+                      <button
+                        type="button"
+                        onClick={() => handleOpenHistory(product)}
+                        className="flex items-center justify-center gap-1 py-2 px-1 rounded-xl bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 active:scale-95 transition-all text-xs font-bold cursor-pointer"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="2"
+                          stroke="currentColor"
+                          className="h-3.5 w-3.5"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <span>History</span>
+                      </button>
+
+                      {/* Remove or Restore */}
+                      {!isArchived ? (
+                        <button
+                          type="button"
+                          onClick={() => setDeletingProduct(product)}
+                          className="flex items-center justify-center gap-1 py-2 px-1 rounded-xl bg-rose-100 dark:bg-red-500/10 text-rose-700 dark:text-red-300 border border-rose-300 dark:border-red-500/30 hover:bg-rose-200 dark:hover:bg-red-500/20 active:scale-95 transition-all text-xs font-bold cursor-pointer"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="h-3.5 w-3.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                            />
+                          </svg>
+                          <span>Remove</span>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleRestoreProduct(product)}
+                          className="flex items-center justify-center gap-1 py-2 px-1 rounded-xl bg-emerald-100 dark:bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 hover:bg-emerald-200 dark:hover:bg-emerald-500/20 active:scale-95 transition-all text-xs font-bold cursor-pointer"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="2"
+                            stroke="currentColor"
+                            className="h-3.5 w-3.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+                            />
+                          </svg>
+                          <span>Restore</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* ========================================================= */}
+        {/* 2. DESKTOP TABLE VIEW (Visible on desktop: md+)           */}
+        {/* ========================================================= */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
             <thead className="border-b border-slate-200 dark:border-white/10 bg-slate-100/90 dark:bg-slate-900/80 text-xs uppercase font-semibold tracking-wider text-slate-600 dark:text-slate-400">
               <tr>
-                <th className="px-5 py-3.5">Item Name & Brand</th>
-                <th className="px-5 py-3.5">Category</th>
-                <th className="px-5 py-3.5">Barcode / Code</th>
-                <th className="px-5 py-3.5 text-right">Price (Rs.)</th>
-                <th className="px-5 py-3.5 text-center">Stock Level</th>
-                <th className="px-5 py-3.5 text-right">Actions</th>
+                <th className="px-3.5 sm:px-5 py-3 sm:py-3.5">Item Name & Brand</th>
+                <th className="px-3.5 sm:px-5 py-3 sm:py-3.5">Category</th>
+                <th className="px-3.5 sm:px-5 py-3 sm:py-3.5">Barcode / Code</th>
+                <th className="px-3.5 sm:px-5 py-3 sm:py-3.5 text-right">Price (Rs.)</th>
+                <th className="px-3.5 sm:px-5 py-3 sm:py-3.5 text-center">Stock Level</th>
+                <th className="px-3.5 sm:px-5 py-3 sm:py-3.5 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200/80 dark:divide-white/5">
@@ -654,7 +923,7 @@ export default function ProductsPage() {
                         } ${isArchived ? "opacity-60 bg-slate-200/50 dark:bg-slate-950/40" : ""}`}
                     >
                       {/* Item Name & Brand */}
-                      <td className="px-5 py-4">
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4">
                         <div className="flex items-center gap-2">
                           <span className="font-semibold text-slate-900 dark:text-white">{product.title}</span>
                           {isArchived && (
@@ -669,7 +938,7 @@ export default function ProductsPage() {
                       </td>
 
                       {/* Category */}
-                      <td className="px-5 py-4">
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4">
                         {product.category ? (
                           <span className="badge-category rounded-md px-2 py-0.5 text-xs font-medium">
                             {product.category}
@@ -680,7 +949,7 @@ export default function ProductsPage() {
                       </td>
 
                       {/* Barcode / SKU */}
-                      <td className="px-5 py-4">
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4">
                         {product.isbn && (
                           <div className="font-mono text-xs text-slate-700 dark:text-slate-300">
                             <span className="text-slate-400 mr-1">Barcode:</span>
@@ -699,7 +968,7 @@ export default function ProductsPage() {
                       </td>
 
                       {/* Price & Cost */}
-                      <td className="px-5 py-4 text-right">
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4 text-right">
                         <div className="font-extrabold text-cyan-700 dark:text-[#1ecbe1]">
                           Rs. {parseFloat(product.price).toFixed(2)}
                         </div>
@@ -711,7 +980,7 @@ export default function ProductsPage() {
                       </td>
 
                       {/* Stock Level */}
-                      <td className="px-5 py-4 text-center">
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4 text-center">
                         <div className="inline-flex flex-col items-center">
                           <span
                             className={`rounded-full px-2.5 py-1 text-xs font-bold ${isLowStock ? "badge-lowstock" : "badge-instock"
@@ -726,7 +995,7 @@ export default function ProductsPage() {
                       </td>
 
                       {/* Actions */}
-                      <td className="px-5 py-4 text-right">
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4 text-right">
                         <div className="flex items-center justify-end gap-1.5 flex-wrap">
                           {/* Adjust Stock */}
                           {!isArchived && (
@@ -927,7 +1196,7 @@ export default function ProductsPage() {
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-4">
               <div>
                 <h2 className="text-lg font-bold text-slate-900 dark:text-white">Add New Stationery / Item</h2>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Writing books (CR, B5, XE), pens, food & snacks</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Writing books, pens, food & snacks</p>
               </div>
               <button
                 onClick={() => setShowAddModal(false)}
@@ -1015,7 +1284,7 @@ export default function ProductsPage() {
               </div>
 
               {/* Writing Book Specification Helper Chips */}
-              {formData.category.includes("Writing Books") && (
+              {formData.category.toLowerCase().includes("writing") && (
                 <div className="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 space-y-2 text-xs backdrop-blur-md">
                   <div className="text-[11px] font-bold text-slate-800 dark:text-slate-300">
                     Click to add specification to Item Name:
