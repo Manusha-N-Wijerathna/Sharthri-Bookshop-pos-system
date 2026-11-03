@@ -7,7 +7,17 @@ export default auth((req) => {
   const pathname = nextUrl.pathname;
 
   // Public routes — always accessible
-  const publicRoutes = ["/login", "/api/auth"];
+  const publicRoutes = [
+    "/login",
+    "/api/auth",
+    "/manifest.json",
+    "/sw.js",
+    "/favicon.png",
+    "/apple-touch-icon.png",
+    "/brand-logo.png",
+    "/brand-banner.jpg",
+    "/icons",
+  ];
   const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
 
   if (isPublicRoute) {
@@ -35,6 +45,8 @@ export default auth((req) => {
 });
 
 export const config = {
-  // Run middleware on all routes except static files and images
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  // Run middleware on all routes except static files, images, and PWA assets
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|manifest.json|sw.js|brand-logo.png|brand-banner.jpg|apple-touch-icon.png|icons/|.*\\.png$|.*\\.jpg$).*)",
+  ],
 };

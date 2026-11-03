@@ -4,6 +4,8 @@ import { products } from "@/db/schema";
 import { and, desc, eq, ilike, or } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   const session = await auth();
   if (!session?.user) {

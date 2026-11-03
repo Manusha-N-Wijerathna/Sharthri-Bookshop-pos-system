@@ -5,6 +5,8 @@ import { createSaleSchema } from "@/lib/validations/sale";
 import { desc, eq, inArray } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 // Cache for idempotency keys to reject duplicate rapid submissions
 interface IdempotencyRecord {
   status: "in-progress" | "completed";
