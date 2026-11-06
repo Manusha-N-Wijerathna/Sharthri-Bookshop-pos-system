@@ -6,7 +6,7 @@ export default auth((req) => {
   const isLoggedIn = !!session?.user;
   const pathname = nextUrl.pathname;
 
-  // Public routes — always accessible
+  // Public routes — always accessible without authentication
   const publicRoutes = [
     "/login",
     "/api/auth",
@@ -21,9 +21,9 @@ export default auth((req) => {
   const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
 
   if (isPublicRoute) {
-    // If logged in and trying to access /login, redirect to home
+    // If logged in and trying to access /login, redirect to their role's home view
     if (isLoggedIn && pathname === "/login") {
-      const redirectTo = session.user.role === "admin" ? "/admin" : "/sell";
+      const redirectTo = session.user.role === "admin" ? "/admin/products" : "/sell";
       return NextResponse.redirect(new URL(redirectTo, nextUrl));
     }
     return NextResponse.next();
@@ -31,13 +31,22 @@ export default auth((req) => {
 
   // Everything below requires authentication
   if (!isLoggedIn) {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const loginUrl = new URL("/login", nextUrl);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  // Admin-only routes
-  if (pathname.startsWith("/admin") && session.user.role !== "admin") {
+  // Admin-only routes (both UI pages and API endpoints)
+  if (
+    (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) &&
+    session.user.role !== "admin"
+  ) {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Forbidden: Admin access required" }, { status: 403 });
+    }
     return NextResponse.redirect(new URL("/sell", nextUrl));
   }
 

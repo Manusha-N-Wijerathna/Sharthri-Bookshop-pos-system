@@ -711,12 +711,26 @@ export default function SellPage() {
             {/* Items Grid Appearing Directly Under Search Bar */}
             <div className="max-h-[520px] overflow-y-auto pos-scrollbar pr-1">
               {catalogLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-2 animate-pulse">
                   {[1, 2, 3, 4, 5, 6].map((n) => (
                     <div
                       key={n}
-                      className="h-28 rounded-2xl bg-slate-100 dark:bg-white/[0.03] animate-pulse border border-slate-200 dark:border-white/10"
-                    />
+                      className="p-3.5 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/60 dark:bg-white/[0.02] flex flex-col justify-between h-36"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="h-4 w-20 rounded-md bg-slate-200 dark:bg-white/10" />
+                          <div className="h-4 w-16 rounded-full bg-slate-200 dark:bg-white/10" />
+                        </div>
+                        <div className="h-4 w-3/4 rounded bg-slate-200 dark:bg-white/10 mb-1.5" />
+                        <div className="h-3 w-1/2 rounded bg-slate-200/70 dark:bg-white/5" />
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-white/5">
+                        <div className="h-5 w-20 rounded bg-slate-200 dark:bg-white/10" />
+                        <div className="h-8 w-16 rounded-xl bg-slate-200 dark:bg-white/10" />
+                      </div>
+                    </div>
                   ))}
                 </div>
               ) : displayedProducts.length === 0 ? (
@@ -1328,9 +1342,26 @@ export default function SellPage() {
             {/* Content List */}
             <div className="flex-1 overflow-y-auto pos-scrollbar space-y-3 pr-1 min-h-[240px]">
               {historyLoading ? (
-                <div className="py-16 text-center text-xs text-slate-400 flex flex-col items-center justify-center gap-2">
-                  <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#1ecbe1] border-t-transparent" />
-                  <span>Loading checkout records...</span>
+                <div className="space-y-3 animate-pulse">
+                  {[1, 2, 3, 4].map((idx) => (
+                    <div
+                      key={idx}
+                      className="p-4 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50/70 dark:bg-white/[0.03] space-y-3"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="h-4 w-20 rounded bg-slate-200 dark:bg-white/10" />
+                          <div className="h-4 w-24 rounded bg-slate-200 dark:bg-white/10" />
+                        </div>
+                        <div className="h-5 w-20 rounded bg-slate-200 dark:bg-white/10" />
+                      </div>
+                      <div className="h-3 w-40 rounded bg-slate-200/70 dark:bg-white/5" />
+                      <div className="flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-white/5">
+                        <div className="h-3.5 w-28 rounded bg-slate-200/70 dark:bg-white/5" />
+                        <div className="h-7 w-24 rounded-xl bg-slate-200 dark:bg-white/10" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : checkoutHistory.length === 0 ? (
                 <div className="py-16 text-center text-xs text-slate-500 dark:text-slate-400">

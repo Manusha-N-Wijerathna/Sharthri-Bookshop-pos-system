@@ -600,9 +600,29 @@ export default function ProductsPage() {
         {/* ========================================================= */}
         <div className="block md:hidden">
           {loading ? (
-            <div className="py-12 text-center text-slate-400 flex flex-col items-center justify-center gap-3">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#1ecbe1] border-t-transparent" />
-              <span className="text-xs">Loading inventory...</span>
+            <div className="p-3 space-y-3 animate-pulse">
+              {[1, 2, 3, 4].map((idx) => (
+                <div
+                  key={idx}
+                  className="p-3.5 rounded-2xl border border-slate-200/90 dark:border-white/10 bg-white/90 dark:bg-white/[0.03] space-y-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="h-5 w-24 rounded-lg bg-slate-200 dark:bg-white/10" />
+                    <div className="h-5 w-20 rounded-full bg-slate-200 dark:bg-white/10" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="h-4 w-44 rounded bg-slate-200 dark:bg-white/10" />
+                    <div className="h-3 w-32 rounded bg-slate-200/70 dark:bg-white/5" />
+                  </div>
+                  <div className="h-12 rounded-xl bg-slate-100 dark:bg-white/5" />
+                  <div className="grid grid-cols-4 gap-1.5 pt-1">
+                    <div className="h-8 rounded-xl bg-slate-200 dark:bg-white/10" />
+                    <div className="h-8 rounded-xl bg-slate-200 dark:bg-white/10" />
+                    <div className="h-8 rounded-xl bg-slate-200 dark:bg-white/10" />
+                    <div className="h-8 rounded-xl bg-slate-200 dark:bg-white/10" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : products.length === 0 ? (
             <div className="p-8 text-center text-slate-400 flex flex-col items-center justify-center gap-2">
@@ -876,14 +896,38 @@ export default function ProductsPage() {
             </thead>
             <tbody className="divide-y divide-slate-200/80 dark:divide-white/5">
               {loading ? (
-                <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-400">
-                    <div className="flex flex-col items-center justify-center gap-3">
-                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#1ecbe1] border-t-transparent" />
-                      <span>Loading inventory...</span>
-                    </div>
-                  </td>
-                </tr>
+                <>
+                  {[1, 2, 3, 4, 5, 6].map((idx) => (
+                    <tr key={idx} className="animate-pulse">
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4">
+                        <div className="space-y-1.5">
+                          <div className="h-4 w-44 rounded bg-slate-200 dark:bg-white/10" />
+                          <div className="h-3 w-28 rounded bg-slate-200/70 dark:bg-white/5" />
+                        </div>
+                      </td>
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4">
+                        <div className="h-6 w-20 rounded-lg bg-slate-200 dark:bg-white/10" />
+                      </td>
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4">
+                        <div className="h-4 w-28 rounded bg-slate-200 dark:bg-white/10 font-mono" />
+                      </td>
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4 text-right">
+                        <div className="h-5 w-20 rounded bg-slate-200 dark:bg-white/10 ml-auto" />
+                      </td>
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4 text-center">
+                        <div className="h-6 w-24 rounded-full bg-slate-200 dark:bg-white/10 mx-auto" />
+                      </td>
+                      <td className="px-3.5 sm:px-5 py-3.5 sm:py-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <div className="h-8 w-16 rounded-xl bg-slate-200 dark:bg-white/10" />
+                          <div className="h-8 w-14 rounded-xl bg-slate-200 dark:bg-white/10" />
+                          <div className="h-8 w-16 rounded-xl bg-slate-200 dark:bg-white/10" />
+                          <div className="h-8 w-16 rounded-xl bg-slate-200 dark:bg-white/10" />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </>
               ) : products.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="py-12 text-center text-slate-400">
@@ -1769,11 +1813,22 @@ export default function ProductsPage() {
 
             <div className="mt-4">
               {historyLoading ? (
-                <div className="py-12 text-center text-slate-400">
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#1ecbe1] border-t-transparent" />
-                    <span>Loading audit log...</span>
-                  </div>
+                <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1 animate-pulse">
+                  {[1, 2, 3, 4].map((idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between rounded-xl border border-slate-200 dark:border-white/5 bg-slate-100/70 dark:bg-white/[0.03] p-3 text-xs"
+                    >
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <div className="h-4 w-16 rounded bg-slate-200 dark:bg-white/10" />
+                          <div className="h-4 w-28 rounded bg-slate-200 dark:bg-white/10" />
+                        </div>
+                        <div className="h-3 w-40 rounded bg-slate-200/70 dark:bg-white/5" />
+                      </div>
+                      <div className="h-6 w-16 rounded-md bg-slate-200 dark:bg-white/10" />
+                    </div>
+                  ))}
                 </div>
               ) : movements.length === 0 ? (
                 <div className="py-12 text-center text-slate-500 dark:text-slate-400">
