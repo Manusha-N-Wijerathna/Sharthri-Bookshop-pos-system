@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import AnalyticsLoading from "./loading";
 
 interface PeriodMetric {
   sales: string;
@@ -108,6 +109,10 @@ export default function AnalyticsDashboardPage() {
     month: "This Month",
     all: "All Time",
   };
+
+  if (loading && !data) {
+    return <AnalyticsLoading />;
+  }
 
   return (
     <div className="flex flex-col gap-7 pb-16 animate-fade-in max-w-7xl mx-auto">
